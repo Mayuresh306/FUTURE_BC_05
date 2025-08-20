@@ -81,7 +81,8 @@ function App() {
       {/* Navbar */}
       <Navbar bg="" expand="sm" className="mb-4 text-center" style={{ backgroundColor:'blueviolet', textAlign: 'center',height: 100}}>
         <Container>
-          <Navbar.Brand href="/">Coinlytics</Navbar.Brand>
+          <div class="logo"></div>
+          <Navbar.Brand href="/"  style={{color:"gold"}}>Coinlytics</Navbar.Brand>
           {/* <Navbar.Toggle /> */}
           <Navbar.Collapse>
             <Nav className="ms-auto" style={{}}>
@@ -106,12 +107,12 @@ function App() {
         <Tab.Container defaultActiveKey="market">
           <Row>
             <Col>
-              <Nav variant="pills" className="mb-4" style={{textAlign: 'center'}}>
+              <Nav variant="pills" className="mb-4" >
                 <Nav.Item>
-                  <Nav.Link eventKey="market">Market</Nav.Link>
+                  <Nav.Link eventKey="market" style={{color: "black"}}>Market</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="portfolio">Portfolio</Nav.Link>
+                  <Nav.Link eventKey="portfolio" style={{color: "black"}}>Portfolio</Nav.Link>
                 </Nav.Item>
               </Nav>
 

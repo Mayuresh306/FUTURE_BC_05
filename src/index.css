@@ -23,6 +23,8 @@ code {
 
 .navbar {
   background: linear-gradient(135deg, #208bcd, #b640e1);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+
 }
 
 h4 {
@@ -31,3 +33,44 @@ h4 {
 p {
   color: #b3cac5;
 }
+
+.navbar-brand {
+  font-size: 30px;
+  font-weight: 700;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.nav {
+  border-radius: 25px;
+}
+
+.nav-tabs .nav-link.active {
+  background: #00c6ff;
+  color: white;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.nav-tabs .nav-link:hover {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #2a2a2a;
+}
+
+.table tbody tr:hover {
+  background-color: #3a3a3a;
+  transition: 0.3s;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  background-image: url("CoinlyticsM.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+
