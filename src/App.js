@@ -87,6 +87,8 @@ function App() {
             <Nav className="ms-auto" style={{}}>
               <InputGroup className="mb-3 rounded-pill" style={{}}>
                     <Form.Control
+                      type="search" 
+                      id="search"
                       placeholder="🔍 Search coins..."
                       onChange={(e) => setSearch(e.target.value)} 
                       style={{textAlign: "left"}}
@@ -254,12 +256,12 @@ function App() {
                             price: coin.current_price,
                           }))}
                         >
-                          <XAxis dataKey="symbol" stroke="black"  tick={{ fill: "red" }} />
-                          <YAxis dataKey="price" stroke="black" tick={{ fill: "blue" }} />
+                          <XAxis dataKey="name" stroke="black"  tick={{ fill: "white" }} />
+                          <YAxis className="axis" stroke="black" tick={{ fill: "white" }} />
                           <Tooltip />
                           <Line
                             type="monotone"
-                            dataKey="symbol"
+                            dataKey="price"
                             stroke="cyan"
                           />
                         </LineChart>

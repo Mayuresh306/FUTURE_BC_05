@@ -24,3 +24,10 @@ code {
 .navbar {
   background: linear-gradient(135deg, #208bcd, #b640e1);
 }
+
+h4 {
+  color: #b3cac5;
+}
+p {
+  color: #b3cac5;
+}
