@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
-import { WalletConnect } from "./components/walletConnect"
 import { ethers } from "ethers";
 import {
   Navbar,
@@ -28,38 +27,21 @@ function App() {
   const [portfolio, setPortfolio] = useState([]);
   const [currentPage , setCurrentPage] = useState(1);
   const [walletAddress , setWalletaddress] = useState(null);
+  const [Tokens , setTokens] = useState([]);
   const coinsPerPage = 10;
-  
 
-  // Get balances for any chain
-async function fetchPortfolio(walletAddress) {
-  try {
-    const covalent_api = "cqt_rQxkGWCvtqJ9gyjvtmpqChbDYwTh";
-    const chains = [1 , 56 , 137 , 43114 , 250 , 42161 , 10 ]; // ETH, BSC, Polygon, Avalanche, Fantom, Arbitrum, Optimism
-
-    let allholdings = [];
-
-    for (let chainId in chains) {
-      const res = await fetch(`https://api.covalenthq.com/v1/${chainId}/address/${walletAddress}/balances_v2/?key=${covalent_api}`);
-      const data = await res.json();
-
-      if (data?.data?.items) {
-        allholdings = [...allholdings , ...data.data.items];
-      }
+  // Load from localStorage when app starts
+  useEffect(() => {
+    const saved = localStorage.getItem("portfolioTokens");
+    if (saved) {
+      setPortfolio(JSON.parse(saved));
     }
-    return allholdings;
-  } catch (error) {
-      console.error("Error Fetching Portfolio:" , error);
-      return [];
-    }
-};
+  }, []);
 
-
-const handleWalletConnect = async (walletAddress) => {
-  const holdings = await fetchPortfolio(walletAddress);
-  setPortfolio(holdings);
-}
-
+  // Save to localStorage whenever portfolio changes
+  useEffect(() => {
+    localStorage.setItem("portfolioTokens", JSON.stringify(portfolio));
+  }, [portfolio]);
 
   useEffect(() => {
     fetch(
@@ -70,12 +52,18 @@ const handleWalletConnect = async (walletAddress) => {
       .catch((err) => console.error(err));
   }, []);
 
-  // const addToPortfolio = (coin) => {
-  //   if (!portfolio.find((c) => c.id === coin.id)) {
-  //     setPortfolio((prev) => [...prev, coin]);
-  //   }
-  //   toast.success("Added Successfully!")
-  // };
+  const addToPortfolio = (coin) => {
+    if (!portfolio.find((c) => c.id === coin.id)) {
+      setPortfolio((prev) => [...prev, coin]);
+    }
+    toast.success("Added Successfully!")
+  };
+
+  const removefromPortfolio = (index) => {
+    const removetoken = portfolio.filter((_, i) => i !== index);
+    setPortfolio(removetoken);
+    toast.success("Token Removed Successfully!");
+  }
 
   const filteredCoins = coins.filter((coin) =>
     coin.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -198,55 +186,80 @@ const handleWalletConnect = async (walletAddress) => {
         </button>
       </div>
                 </Tab.Pane>
-                <WalletConnect onWalletConnected={handleWalletConnect} />
                 {/* Portfolio Tab */}
                 <Tab.Pane eventKey="portfolio">
+                  <Table striped bordered hover responsive variant="dark">
                   <h4>Your Portfolio</h4>
-                   {portfolio.length > 0 ? (
+                   {portfolio && portfolio.length > 0 ? (
         <table className="table table-dark table-striped mt-3 rounded">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Token</th>
-              <th>Symbol</th>
-              <th>Balance</th>
-              <th>Value (USD)</th>
+                        <th>#</th>
+                        <th>Coin</th>
+                        <th>Price</th>
+                        <th>24h Change</th>
+                        <th>Market Cap</th>
+                        <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {portfolio.map((token, index) => (
-              <tr key={token.contract_address}>
-                <td>{index + 1}</td>
-                <td>{token.contract_name || "Unknown"}</td>
-                <td>{token.contract_ticker_symbol}</td>
+              <tr key={index + 1}>
+                <td>{index+1}</td>
                 <td>
-                  {(Number(token.balance) / Math.pow(10, token.contract_decimals)).toFixed(4)}
+                <td><img
+                  src={token.image}
+                  alt={token.name}
+                  style={{ width: "25px", marginRight: "10px" }}
+                />
                 </td>
-                <td>${token.quote ? token.quote.toFixed(2) : 0}</td>
+                {token.name}
+              </td>
+              <td>${token.current_price.toLocaleString()}</td>
+              <td
+                style={{
+                   color:
+                    token.price_change_percentage_24h > 0
+                      ? "limegreen"
+                      : "red",
+                }}
+              >
+                {token.price_change_percentage_24h.toFixed(2)}%
+              </td>
+              <td>${token.market_cap.toLocaleString()}</td>
+               <td>
+                            <button
+                              className="btn btn-success btn-sm rounded-pill"
+                              onClick={() => removefromPortfolio(index)}
+                            >
+                              Remove
+                            </button>
+                          </td>
               </tr>
             ))}
           </tbody>
         </table>
       ) : (
-        <p className="mt-3">No tokens found in your wallet.</p>
+        <p className="mt-3">No tokens found in your portfolio.</p>
       )}
+      </Table>
 
-                  {/* Example Chart */}
+                  {/* Chart */}
                   {portfolio.length > 0 && (
                     <div style={{ height: 300 , color: 'darkcyan' }}>
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart
                           data={portfolio.map((coin) => ({
-                            name: coin.symbol.toUpperCase(),
+                            name: coin.symbol ? coin.symbol.toUpperCase() : "N/A",
                             price: coin.current_price,
                           }))}
                         >
-                          <XAxis dataKey="name" />
-                          <YAxis className="axis" style={{backgroundcolor: 'darkcyan'}} />
+                          <XAxis dataKey="symbol" stroke="black"  tick={{ fill: "red" }} />
+                          <YAxis dataKey="price" stroke="black" tick={{ fill: "blue" }} />
                           <Tooltip />
                           <Line
                             type="monotone"
-                            dataKey="price"
+                            dataKey="symbol"
                             stroke="cyan"
                           />
                         </LineChart>

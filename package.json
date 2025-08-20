@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@alch/alchemy-sdk": "^1.1.1",
     "@covalenthq/client-sdk": "^2.3.2",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.7.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "alchemy-sdk": "^3.6.3",
     "bootstrap": "^5.3.7",
     "dotenv": "^17.2.1",
     "ethers": "^6.15.0",
