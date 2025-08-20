@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { ethers } from "ethers";
+import { Analytics } from "@vercel/analytics/react"
 import {
   Navbar,
   Nav,
@@ -276,6 +277,9 @@ function App() {
         </Tab.Container>
         <ToastContainer position="top-right" autoClose={3000} />
       </Container>
+      <div>
+        <Analytics />
+      </div>
     </>
   );
 }
