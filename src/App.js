@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { ethers } from "ethers";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
+import WalletConnect from './components/walletConnect';
 import {
   Navbar,
   Nav,
@@ -192,8 +193,9 @@ function App() {
                 </Tab.Pane>
                 {/* Portfolio Tab */}
                 <Tab.Pane eventKey="portfolio">
-                  <Table striped bordered hover responsive variant="dark">
+                  <Table striped bordered hover responsive variant="">
                   <h4>Your Portfolio</h4>
+                  <WalletConnect />
                    {portfolio && portfolio.length > 0 ? (
         <table className="table table-dark table-striped mt-3 rounded">
           <thead>
@@ -244,7 +246,7 @@ function App() {
           </tbody>
         </table>
       ) : (
-        <p className="mt-3">No tokens found in your portfolio.</p>
+        <p className="mt-3">No tokens Added in your portfolio.</p>
       )}
       </Table>
 
@@ -275,7 +277,7 @@ function App() {
             </Col>
           </Row>
         </Tab.Container>
-        <ToastContainer position="top-right" autoClose={3000} />
+        <ToastContainer position="top-right" autoClose={1000} />
       </Container>
       <div>
         <Analytics />
