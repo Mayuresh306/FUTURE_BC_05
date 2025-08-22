@@ -7,6 +7,11 @@ This tool simulates real-world dashboards used by crypto investors and analysts 
 
 ---
 
+## Demo View
+- [click Here](https://coinlytics-io.vercel.app/)
+
+---
+
 ## ✅ What I Did
 - Built a working **portfolio tracker**
 - Integrated **CoinGecko API** for live prices
